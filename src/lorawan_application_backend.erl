@@ -308,8 +308,8 @@ cayenne_decode(<<Ch, 2, Val:16/signed-integer, Rest/binary>>, Acc) ->
 % analog output
 cayenne_decode(<<Ch, 3, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Analog_out{Val/100}, Acc));
-% generic sensor
-cayenne_decode(<<Ch, 100, Val/signed-integer, Rest/binary>>, Acc) ->
+% Generic sensor
+cayenne_decode(<<Ch, 100, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Generic_sensor{Val}, Acc));
 % illuminance
 cayenne_decode(<<Ch, 101, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
@@ -327,19 +327,19 @@ cayenne_decode(<<Ch, 104, Val, Rest/binary>>, Acc) ->
 cayenne_decode(<<Ch, 105, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Power_measurement{Val/10}, Acc));
 % actuation
-cayenne_decode(<<Ch, 106, Val/signed-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 106, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Actuation{Val}, Acc));
 % set point
-cayenne_decode(<<Ch, 108, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 108, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Set_point{Val}, Acc));
 % load control
-cayenne_decode(<<Ch, 110, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 110, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Load_control{Val/10}, Acc));
 % light control
-cayenne_decode(<<Ch, 111, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 111, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Light_control{Val/10}, Acc));
 % power control
-cayenne_decode(<<Ch, 112, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 112, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Power_control{Val/10}, Acc));
 % accelerometer
 cayenne_decode(<<Ch, 113, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
@@ -351,17 +351,14 @@ cayenne_decode(<<Ch, 114, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-
 cayenne_decode(<<Ch, 115, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Barometer{Val/10}, Acc));
 % voltage
-cayenne_decode(<<Ch, 116, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 116, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Voltage{Val/10}, Acc));
 % current
-cayenne_decode(<<Ch, 117, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 117, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Current{Val/10}, Acc));
 % frequency
 cayenne_decode(<<Ch, 118, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Frequency{Val/10}, Acc));
-% depth
-cayenne_decode(<<Ch, 119, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Depth{Val/10}, Acc));
 % percentage
 cayenne_decode(<<Ch, 120, Val/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Percentage{Val}, Acc));
@@ -370,7 +367,7 @@ cayenne_decode(<<Ch, 121, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Altitude{Val/10}, Acc));
 % load
 cayenne_decode(<<Ch, 122, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Load{Val/1000}, Acc));
+    cayenne_decode(Rest, add_field(Ch, #Load{Val/10}, Acc));
 % pressure
 cayenne_decode(<<Ch, 123, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Pressure{Val/10}, Acc));
@@ -389,12 +386,9 @@ cayenne_decode(<<Ch, 127, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
 % power
 cayenne_decode(<<Ch, 128, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Power{Val/10}, Acc));
-% power factor
-cayenne_decode(<<Ch, 129, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Power_factor{Val/10}, Acc));
 % distance
 cayenne_decode(<<Ch, 130, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Distance{Val/1000}, Acc));
+    cayenne_decode(Rest, add_field(Ch, #Distance{Val/10}, Acc));
 % energy
 cayenne_decode(<<Ch, 131, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Energy{Val/10}, Acc));
@@ -402,13 +396,13 @@ cayenne_decode(<<Ch, 131, Val:16/signed-integer, Rest/binary>>, Acc) ->
 cayenne_decode(<<Ch, 132, Val/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Direction{Val}, Acc));
 % time 
-cayenne_decode(<<Ch, 133, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 133, Val:32/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Time{Val}, Acc));
 % gyrometer
 cayenne_decode(<<Ch, 134, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Gyrometer{x => X/100, y => Y/100, z => Z/100}, Acc));
 % colour 
-cayenne_decode(<<Ch, 135, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 135, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Colour{Val}, Acc));
 % gps
 cayenne_decode(<<Ch, 136, Lat:24/signed-integer, Lon:24/signed-integer, Alt:24/signed-integer, Rest/binary>>, Acc) ->
@@ -416,9 +410,6 @@ cayenne_decode(<<Ch, 136, Lat:24/signed-integer, Lon:24/signed-integer, Alt:24/s
 % positioner 
 cayenne_decode(<<Ch, 137, Val/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Positioner{Val}, Acc));
-% timer 
-cayenne_decode(<<Ch, 140, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Timer{Val}, Acc));
 % on/off switch 
 cayenne_decode(<<Ch, 142, Val/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Switch{Val}, Acc));
@@ -438,44 +429,44 @@ cayenne_decode(<<Ch, 146, Val/unsigned-integer, Rest/binary>>, Acc) ->
 cayenne_decode(<<Ch, 147, Val/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Push_button{Val}, Acc));
 % multistate selector
-cayenne_decode(<<Ch, 148, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 148, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Multistate_selector{Val}, Acc));
 % moisture
 cayenne_decode(<<Ch, 170, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Moisture{Val}, Acc));
-% sound
-cayenne_decode(<<Ch, 171, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Sound{Val}, Acc));
+    cayenne_decode(Rest, add_field(Ch, #Moisture{Val/2}, Acc));
 % smoke
-cayenne_decode(<<Ch, 172, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Smoke{Val}, Acc));
+cayenne_decode(<<Ch, 171, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Smoke{Val/10}, Acc));
 % alcohol
-cayenne_decode(<<Ch, 173, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Alcohol{Val}, Acc));
+cayenne_decode(<<Ch, 172, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Alcohol{Val/10}, Acc));
 % LPG (liquid petroleum gas)
-cayenne_decode(<<Ch, 174, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #LPG{Val}, Acc));
+cayenne_decode(<<Ch, 173, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #LPG{Val/10}, Acc));
 % carbon monoxide
-cayenne_decode(<<Ch, 175, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Carbon_monoxide{Val}, Acc));
+cayenne_decode(<<Ch, 174, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Carbon_monoxide{Val/10}, Acc));
 % carbon dioxide
-cayenne_decode(<<Ch, 176, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Carbon_Dioxide{Val}, Acc));
+cayenne_decode(<<Ch, 175, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Carbon_Dioxide{Val/10}, Acc));
 % air quality
-cayenne_decode(<<Ch, 177, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 176, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Air_quality{Val}, Acc));
 % collision
-cayenne_decode(<<Ch, 178, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Collision{Val}, Acc));
+cayenne_decode(<<Ch, 177, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Collision{Val/10}, Acc));
 % dust
-cayenne_decode(<<Ch, 179, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Dust{Val}, Acc));
+cayenne_decode(<<Ch, 178, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Dust{Val/10}, Acc));
 % fire
-cayenne_decode(<<Ch, 180, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Fire{Val}, Acc));
+cayenne_decode(<<Ch, 179, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Fire{Val/10}, Acc));
 % uv
-cayenne_decode(<<Ch, 181, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #UV{Val}, Acc));
+cayenne_decode(<<Ch, 180, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #UV{Val/10}, Acc));
+% battery
+cayenne_decode(<<Ch, 181, Val, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Battery{Val/2}, Acc));
 cayenne_decode(<<>>, Acc) ->
     Acc.
         

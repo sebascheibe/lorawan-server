@@ -440,42 +440,12 @@ cayenne_decode(<<Ch, 147, Val/unsigned-integer, Rest/binary>>, Acc) ->
 % multistate selector
 cayenne_decode(<<Ch, 148, Val/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Multistate_selector{Val}, Acc));
-% moisture
-cayenne_decode(<<Ch, 170, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Moisture{Val}, Acc));
-% sound
-cayenne_decode(<<Ch, 171, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Sound{Val}, Acc));
-% smoke
-cayenne_decode(<<Ch, 172, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Smoke{Val}, Acc));
-% alcohol
-cayenne_decode(<<Ch, 173, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Alcohol{Val}, Acc));
-% LPG (liquid petroleum gas)
-cayenne_decode(<<Ch, 174, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #LPG{Val}, Acc));
 % carbon monoxide
-cayenne_decode(<<Ch, 175, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 170, Val/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Carbon_monoxide{Val}, Acc));
-% carbon dioxide
-cayenne_decode(<<Ch, 176, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Carbon_Dioxide{Val}, Acc));
-% air quality
-cayenne_decode(<<Ch, 177, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Air_quality{Val}, Acc));
-% collision
-cayenne_decode(<<Ch, 178, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Collision{Val}, Acc));
-% dust
-cayenne_decode(<<Ch, 179, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Dust{Val}, Acc));
-% fire
-cayenne_decode(<<Ch, 180, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Fire{Val}, Acc));
-% uv
-cayenne_decode(<<Ch, 181, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #UV{Val}, Acc));
+% moisture
+cayenne_decode(<<Ch, 171, Val/unsigned-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, add_field(Ch, #Moisture{Val}, Acc));
 cayenne_decode(<<>>, Acc) ->
     Acc.
         

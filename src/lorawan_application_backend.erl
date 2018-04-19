@@ -298,10 +298,10 @@ cayenne_decode(Bin) ->
 
 % digital input
 cayenne_decode(<<Ch, 0, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, "Digital_in"#{Val}, Acc));
+    cayenne_decode(Rest, add_field(Ch, #{Digital_in => Val}, Acc));
 % digital output
 cayenne_decode(<<Ch, 1, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, add_field(Ch, #Digital_out{Val}, Acc));
+    cayenne_decode(Rest, add_field(Ch, #{Digital_out => Val}, Acc));
 % analog input
 cayenne_decode(<<Ch, 2, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, add_field(Ch, #Analog_in{Val/100}, Acc));

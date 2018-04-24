@@ -307,7 +307,7 @@ cayenne_decode(<<Ch, 1, Val, Rest/binary>>, Acc) ->
 % analog input
 cayenne_decode(<<Ch, 2, Val:16/signed-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Analog_in">>, Val/100, Acc));
-    caycayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Analog_in">>, val => Val/100}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Analog_in">>, val => Val/100}, Acc));
 % analog output
 cayenne_decode(<<Ch, 3, Val:16/signed-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Analog_out">>, Val/100, Acc));
@@ -363,7 +363,7 @@ cayenne_decode(<<Ch, 113, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-
 % magnetometer and compass
 cayenne_decode(<<Ch, 114, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Magnetometer">>, #{x => X/1000, y => Y/1000, z => Z/1000}, Acc));
-    ayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Magnetometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Magnetometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}}, Acc));
 % barometer
 cayenne_decode(<<Ch, 115, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Barometer">>, Val/10, Acc));
@@ -391,7 +391,7 @@ cayenne_decode(<<Ch, 121, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
 % load
 cayenne_decode(<<Ch, 122, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Load">>, Val/10, Acc));
-    ccayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Load">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Load">>, val => Val/10}, Acc));
 % pressure
 cayenne_decode(<<Ch, 123, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Pressure">>, Val/10, Acc));

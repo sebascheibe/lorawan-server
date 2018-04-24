@@ -463,7 +463,7 @@ cayenne_decode(<<Ch, 144, Val/signed-integer, Rest/binary>>, Acc) ->
 % multiple axis joystick
 cayenne_decode(<<Ch, 145, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Multiple_axis_joystick">>, #{x => X/100, y => Y/100, z => Z/100}, Acc));
-     cayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Multiple_axis_joystick">>, val => #{x => X/100, y => Y/100, z => Z/100}, Acc));
+     cayenne_decode(Rest, maps:put(<<"object">>, #{id => Ch, type => <<"Multiple_axis_joystick">>, val => #{x => X/100, y => Y/100, z => Z/100}}, Acc));
 % rate
 cayenne_decode(<<Ch, 146, Val/unsigned-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Rate">>, Val/10, Acc));

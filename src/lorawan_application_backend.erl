@@ -283,8 +283,8 @@ filter_group_responses(_AppID, List) ->
 parse_payload(<<"ascii">>, Data) ->
     #{text => Data};
 parse_payload(<<"cayenne">>, Data) ->
-%    cayenne_decode(Data);
     #{objects => [cayenne_decode(Data)]};
+    %cayenne_decode(Data);
 % TODO: IEEE1888 decode parse
 % parse_payload(<<"ieee1888">>, Data) ->
 %    ieee1888_decode(Data);

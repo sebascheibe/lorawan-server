@@ -445,6 +445,10 @@ cayenne_decode(<<Ch, 135, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
 cayenne_decode(<<Ch, 136, Lat:32/signed-integer, Lon:32/signed-integer, Alt:24/signed-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"GPS">>, #{lat => Lat/10000, lon => Lon/10000, alt => Alt/100}, Acc));
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => Lat/1000000, lon => Lon/1000000, alt => Alt/100}}, Acc));
+% light gps
+cayenne_decode(<<Ch, 236, Lat:24/signed-integer, Lon:24/signed-integer, Alt:24/signed-integer, Rest/binary>>, Acc) ->
+    %cayenne_decode(Rest, maps:put(<<"GPS">>, #{lat => Lat/10000, lon => Lon/10000, alt => Alt/100}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => Lat/10000, lon => Lon/10000, alt => Alt/100}}, Acc));
 % positioner 
 cayenne_decode(<<Ch, 137, Val/unsigned-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Positioner">>, Val, Acc));

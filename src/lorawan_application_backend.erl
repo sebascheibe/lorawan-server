@@ -426,9 +426,9 @@ cayenne_decode(<<Ch, 131, Val:16/signed-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Energy">>, Val/10, Acc));
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Energy">>, val => Val/10}, Acc));
 % direction 
-cayenne_decode(<<Ch, 132, Val/unsigned-integer, Rest/binary>>, Acc) ->
+cayenne_decode(<<Ch, 132,, Val:16/signed-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Direction">>, Val, Acc));
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Direction">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Direction">>, val => Val/1000}, Acc));
 % time 
 cayenne_decode(<<Ch, 133, Val:32/unsigned-integer, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Time">>, Val, Acc));

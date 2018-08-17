@@ -529,6 +529,9 @@ cayenne_decode(<<Ch, 180, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
 cayenne_decode(<<Ch, 181, Val, Rest/binary>>, Acc) ->
     %cayenne_decode(Rest, maps:put(<<"Battery">>, Val/2, Acc));
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Battery">>, val => Val/2}, Acc));
+% velocity
+cayenne_decode(<<Ch, 182, Val:16/signed-integer, Rest/binary>>, Acc) ->
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Velocity">>, val => Val/100}, Acc));
 cayenne_decode(<<>>, Acc) ->
     Acc.
         

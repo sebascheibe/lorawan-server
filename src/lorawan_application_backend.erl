@@ -365,16 +365,16 @@ cayenne_decode(<<Ch, 120, Val/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Percentage">>, val => Val, unit => "%"}, Acc));
 % altitude in m
 cayenne_decode(<<Ch, 121, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Altitude">>, val => Val/100, , unit => "m"}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Altitude">>, val => Val/100, unit => "m"}, Acc));
 % load in %
 cayenne_decode(<<Ch, 122, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Load">>, val => Val/10, , unit => "%"}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Load">>, val => Val/10, unit => "%"}, Acc));
 % pressure in Pa
 cayenne_decode(<<Ch, 123, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Pressure">>, val => Val/10, , unit => "Pa"}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Pressure">>, val => Val/10, unit => "Pa"}, Acc));
 % loudness in dB
 cayenne_decode(<<Ch, 124, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Loudness">>, val => Val/10, , unit => "dB"}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Loudness">>, val => Val/10, unit => "dB"}, Acc));
 % concentration in mol/L
 cayenne_decode(<<Ch, 125, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Concentration">>, val => Val/10, unit => "mol/L"}, Acc));

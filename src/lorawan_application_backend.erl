@@ -320,7 +320,7 @@ cayenne_decode(<<Ch, 102, Val, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Presence">>, val => Val}, Acc));
 % temperature in °C
 cayenne_decode(<<Ch, 103, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Temperature">>, val => Val/10, unit => <<[176]"C">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Temperature">>, val => Val/10, unit => <<[176],"C">>}, Acc));
 % humidity in %
 cayenne_decode(<<Ch, 104, Val, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Humidity">>, val => Val/2, unit => <<"%">>}, Acc));

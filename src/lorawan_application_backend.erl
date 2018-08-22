@@ -438,7 +438,7 @@ cayenne_decode(<<Ch, 148, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Multistate_selector">>, val => Val}, Acc));
 % moisture in g/m³
 cayenne_decode(<<Ch, 170, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Moisture">>, val => Val/2, unit => <<"g/m",[179]>>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Moisture">>, val => Val/2, unit => <<"g/m",io:format("~s~n",["³"])>>}, Acc));
 % smoke in µg/m³
 cayenne_decode(<<Ch, 171, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Smoke">>, val => Val/10, unit => <<"[181]g/m[179]">>}, Acc));

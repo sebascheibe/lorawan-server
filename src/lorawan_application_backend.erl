@@ -344,7 +344,7 @@ cayenne_decode(<<Ch, 112, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power_control">>, val => Val/10}, Acc));
 % accelerometer in m/s²
 cayenne_decode(<<Ch, 113, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Accelerometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}, unit => #{x => <<"m/s",178>>, y => <<"m/s",178>, z => <<"m/s",178>>}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Accelerometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}, unit => #{x => <<"m/s",178>>, y => <<"m/s",178>>, z => <<"m/s",178>>}}, Acc));
 % magnetometer and compass
 cayenne_decode(<<Ch, 114, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Magnetometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}}, Acc));

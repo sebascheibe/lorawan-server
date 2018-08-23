@@ -299,37 +299,37 @@ cayenne_decode(Bin) ->
 
 % digital input
 cayenne_decode(<<Ch, 0, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Digital_in">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Digital_in">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % digital output
 cayenne_decode(<<Ch, 1, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Digital_out">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Digital_out">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % analog input
 cayenne_decode(<<Ch, 2, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Analog_in">>, val => Val/100}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Analog_in">>, val => #{value => Val/100, unit => <<"">>}}, Acc));
 % analog output
 cayenne_decode(<<Ch, 3, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Analog_out">>, val => Val/100}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Analog_out">>, val => #{value => Val/100, unit => <<"">>}}, Acc));
 % Generic sensor
 cayenne_decode(<<Ch, 100, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Generic_Sensor">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Generic_Sensor">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % illuminance in lx
 cayenne_decode(<<Ch, 101, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Iluminance">>, val => Val, unit => <<"lx">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Iluminance">>, val => #{value => Val, unit => <<"lx">>}}, Acc));
 % presence
 cayenne_decode(<<Ch, 102, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Presence">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Presence">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % temperature in °C
 cayenne_decode(<<Ch, 103, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Temperature">>, val => Val/10, unit => [176]++"C"}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Temperature">>, val => #{value => Val/10, unit => [176]++"C"}}, Acc));
 % humidity in %
 cayenne_decode(<<Ch, 104, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Humidity">>, val => Val/2, unit => <<"%">>}, Acc));
-% power measurement
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Humidity">>, val #{value => Val/2, unit => <<"%">>}}, Acc));
+% power measurement in W
 cayenne_decode(<<Ch, 105, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power_measurement">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power_measurement">>, val #{value => Val/10, unit => <<"W">>}}, Acc));
 % actuation
 cayenne_decode(<<Ch, 106, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Actuation">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Actuation">>, val #{value => Val, unit => <<"">>}}, Acc));
 % set point
 cayenne_decode(<<Ch, 108, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Set_point">>, val => Val}, Acc));
@@ -412,7 +412,8 @@ cayenne_decode(<<Ch, 136, Lat:32/signed-integer, Lon:32/signed-integer, Alt:24/s
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => #{value => Lat/1000000, unit => [176]}, lon => #{value => Lon/1000000, unit => [176]}, alt => #{value => Alt/100, unit => <<"m">>}}}, Acc));
 % light gps
 cayenne_decode(<<Ch, 236, Lat:24/signed-integer, Lon:24/signed-integer, Alt:24/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => Lat/10000, lon => Lon/10000, alt => Alt/100}, unit => #{lat => [176], lon => [176], alt => <<"m">>}}, Acc));
+    % cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => Lat/10000, lon => Lon/10000, alt => Alt/100}, unit => #{lat => [176], lon => [176], alt => <<"m">>}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => #{value => Lat/10000, unit => [176]}, lon => #{value => Lon/10000, unit => [176]}, alt => #{value => Alt/100, unit => <<"m">>}}}, Acc));
 % positioner 
 cayenne_decode(<<Ch, 137, Val/unsigned-integer, Rest/binary>>, Acc) ->
      cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Positioner">>, val => Val}, Acc));

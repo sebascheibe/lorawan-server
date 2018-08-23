@@ -409,7 +409,7 @@ cayenne_decode(<<Ch, 135, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
 % gps in ° and m
 cayenne_decode(<<Ch, 136, Lat:32/signed-integer, Lon:32/signed-integer, Alt:24/signed-integer, Rest/binary>>, Acc) ->
     % cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => Lat/1000000, lon => Lon/1000000, alt => Alt/100}, unit => #{lat => [176], lon => [176], alt => <<"m">>}}, Acc));
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, #{lat => #{val => Lat/1000000, unit => [176]},lon => #{val => Lon/1000000, unit => [176]},alt => #{val => Alt/100, unit => <<"m">>}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, #{lat => #{val => Lat/1000000, unit => [176]}, lon => #{val => Lon/1000000, unit => [176]}, alt => #{val => Alt/100, unit => <<"m">>}}, Acc));
 % light gps
 cayenne_decode(<<Ch, 236, Lat:24/signed-integer, Lon:24/signed-integer, Alt:24/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => Lat/10000, lon => Lon/10000, alt => Alt/100}, unit => #{lat => [176], lon => [176], alt => <<"m">>}}, Acc));

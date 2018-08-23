@@ -323,89 +323,91 @@ cayenne_decode(<<Ch, 103, Val:16/signed-integer, Rest/binary>>, Acc) ->
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Temperature">>, val => #{value => Val/10, unit => [176]++"C"}}, Acc));
 % humidity in %
 cayenne_decode(<<Ch, 104, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Humidity">>, val #{value => Val/2, unit => <<"%">>}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Humidity">>, val => #{value => Val/2, unit => <<"%">>}}, Acc));
 % power measurement in W
 cayenne_decode(<<Ch, 105, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power_measurement">>, val #{value => Val/10, unit => <<"W">>}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power_measurement">>, val => #{value => Val/10, unit => <<"W">>}}, Acc));
 % actuation
 cayenne_decode(<<Ch, 106, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Actuation">>, val #{value => Val, unit => <<"">>}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Actuation">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % set point
 cayenne_decode(<<Ch, 108, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Set_point">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Set_point">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % load control
 cayenne_decode(<<Ch, 110, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Load_control">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Load_control">>, val => #{value => Val/10, unit => <<"">>}}, Acc));
 % light control
 cayenne_decode(<<Ch, 111, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Light_control">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Light_control">>, val => #{value => Val/10, unit => <<"">>}}, Acc));
 % power control
 cayenne_decode(<<Ch, 112, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power_control">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power_control">>, val => #{value => Val/10, unit => <<"">>}}, Acc));
 % accelerometer in m/s²
 cayenne_decode(<<Ch, 113, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Accelerometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}, unit => #{x => "m/s"++[178], y => "m/s"++[178], z => "m/s"++[178]}}, Acc));
+   % cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Accelerometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}, unit => #{x => "m/s"++[178], y => "m/s"++[178], z => "m/s"++[178]}}, Acc));
+   cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Accelerometer">>, val => #{x => #{value => X/1000, unit => "m/s"++[178]}, y => #{value => Y/1000, unit => "m/s"++[178]}, z => #{value => Z/1000, unit => "m/s"++[178]}}}, Acc));
 % magnetometer and compass
 cayenne_decode(<<Ch, 114, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Magnetometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}}, Acc));
+    % cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Magnetometer">>, val => #{x => X/1000, y => Y/1000, z => Z/1000}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Magnetometer">>, val => #{x => #{value => X/1000, unit => <<"">>}, y => #{value => Y/1000, unit => <<"">>}, z => #{value => Z/1000, unit => <<"">>}}}, Acc));
 % barometer in hPa
 cayenne_decode(<<Ch, 115, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Barometer">>, val => Val/10, unit => <<"hPa">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Barometer">>, val => #{value => Val/10, unit => <<"hPa">>}}, Acc));
 % voltage in V
 cayenne_decode(<<Ch, 116, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Voltage">>, val => Val/1000, unit => <<"V">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Voltage">>, val => #{value => Val/1000, unit => <<"V">>}}, Acc));
 % current in A
 cayenne_decode(<<Ch, 117, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Current">>, val => Val/1000, unit => <<"A">>}, Acc));
-% frequency
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Current">>, val => #{value => Val/1000, unit => <<"A">>}}, Acc));
+% frequency in Hz
 cayenne_decode(<<Ch, 118, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Frequency">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Frequency">>, val => #{value => Val/10, unit => <<"Hz">>}}, Acc));
 % percentage in %
 cayenne_decode(<<Ch, 120, Val/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Percentage">>, val => Val, unit => <<"%">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Percentage">>, val => #{value => Val/100, unit => <<"%">>}}, Acc));
 % altitude in m
 cayenne_decode(<<Ch, 121, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Altitude">>, val => Val/100, unit => <<"m">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Altitude">>, val => #{value => Val/100, unit => <<"m">>}}, Acc));
 % load in %
 cayenne_decode(<<Ch, 122, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Load">>, val => Val/10, unit => <<"%">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Load">>, val => #{value => Val/10, unit => <<"%">>}}, Acc));
 % pressure in Pa
 cayenne_decode(<<Ch, 123, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Pressure">>, val => Val/10, unit => <<"Pa">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Pressure">>, val => #{value => Val/10, unit => <<"Pa">>}}, Acc));
 % loudness in dB
 cayenne_decode(<<Ch, 124, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Loudness">>, val => Val/10, unit => <<"dB">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Loudness">>, val => #{value => Val/10, unit => <<"dB">>}}, Acc));
 % concentration in mol/L
 cayenne_decode(<<Ch, 125, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Concentration">>, val => Val/10, unit => <<"mol/L">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Concentration">>, val => #{value => Val/10, unit => <<"mol/l">>}}, Acc));
 % acidity in g/L
 cayenne_decode(<<Ch, 126, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Acidity">>, val => Val/10, unit => <<"g/L">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Acidity">>, val => #{value => Val/10, unit => <<"g/l">>}}, Acc));
 % conductivity in S/m
 cayenne_decode(<<Ch, 127, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Conductivity">>, val => Val/10, unit => <<"S/m">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Conductivity">>, val => #{value => Val/10, unit => <<"S/m">>}}, Acc));
 % power in W
 cayenne_decode(<<Ch, 128, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power">>, val => Val/10 , unit => <<"W">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Power">>, val => #{value => Val/10, unit => <<"W">>}}, Acc));
 % distance in m
 cayenne_decode(<<Ch, 130, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Distance">>, val => Val/10, unit => <<"m">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Distance">>, val => #{value => Val/10, unit => <<"m">>}}, Acc));
 % energy in J
 cayenne_decode(<<Ch, 131, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Energy">>, val => Val/10, unit => <<"J">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Energy">>, val => #{value => Val/10, unit => <<"J">>}}, Acc));
 % direction in °
 cayenne_decode(<<Ch, 132, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    %cayenne_decode(Rest, maps:put(<<"Direction">>, Val, Acc));
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Direction">>, val => Val/1000, unit => [176]}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Direction">>, val => #{value => Val/1000, unit => [176]}}, Acc));
 % time in s
 cayenne_decode(<<Ch, 133, Val:32/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Time">>, val => Val/1000, unit => <<"s">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Time">>, val => #{value => Val/1000, unit => <<"s">>}}, Acc));
 % gyrometer in rad/s
 cayenne_decode(<<Ch, 134, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Gyrometer">>, val => #{x => X/100, y => Y/100, z => Z/100}, unit => #{x => <<"rad/s">>, y => <<"rad/s">>, z => <<"rad/s">>}}, Acc));
+    % cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Gyrometer">>, val => #{x => X/100, y => Y/100, z => Z/100}, unit => #{x => <<"rad/s">>, y => <<"rad/s">>, z => <<"rad/s">>}}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Gyrometer">>, val => #{x => #{value => X/100, unit => <<"rad/s">>}, y => #{value => Y/100, unit => <<"rad/s">>}, z => #{value => Z/100, unit => <<"rad/s">>}}}, Acc));
 % colour 
 cayenne_decode(<<Ch, 135, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Colour">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Colour">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % gps in ° and m
 cayenne_decode(<<Ch, 136, Lat:32/signed-integer, Lon:32/signed-integer, Alt:24/signed-integer, Rest/binary>>, Acc) ->
     % cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => Lat/1000000, lon => Lon/1000000, alt => Alt/100}, unit => #{lat => [176], lon => [176], alt => <<"m">>}}, Acc));
@@ -416,67 +418,68 @@ cayenne_decode(<<Ch, 236, Lat:24/signed-integer, Lon:24/signed-integer, Alt:24/s
     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"GPS">>, val => #{lat => #{value => Lat/10000, unit => [176]}, lon => #{value => Lon/10000, unit => [176]}, alt => #{value => Alt/100, unit => <<"m">>}}}, Acc));
 % positioner 
 cayenne_decode(<<Ch, 137, Val/unsigned-integer, Rest/binary>>, Acc) ->
-     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Positioner">>, val => Val}, Acc));
+     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Positioner">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % on/off switch 
 cayenne_decode(<<Ch, 142, Val/unsigned-integer, Rest/binary>>, Acc) ->
-     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Switch">>, val => Val}, Acc));
+     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Switch">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % level control 
 cayenne_decode(<<Ch, 143, Val/unsigned-integer, Rest/binary>>, Acc) ->
-     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Level_control">>, val => Val}, Acc));
+     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Level_control">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % up/down control 
 cayenne_decode(<<Ch, 144, Val/signed-integer, Rest/binary>>, Acc) ->
-     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Control">>, val => Val}, Acc));
+     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Control">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % multiple axis joystick
 cayenne_decode(<<Ch, 145, X:16/signed-integer, Y:16/signed-integer, Z:16/signed-integer, Rest/binary>>, Acc) ->
-     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Multiple_axis_joystick">>, val => #{x => X/100, y => Y/100, z => Z/100}}, Acc));
+     % cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Multiple_axis_joystick">>, val => #{x => X/100, y => Y/100, z => Z/100}}, Acc));
+     cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Multiple_axis_joystick">>, val => #{x => #{value => X/100, unit => <<"">>}, y => #{value => Y/100, unit => <<"">>}, z => #{value => Z/100, unit => <<"">>}}}, Acc));
 % rate in 1/s
 cayenne_decode(<<Ch, 146, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Rate">>, val => Val/10, unit => <<"1/s">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Rate">>, val => #{value => Val/10, unit => <<"1/s">>}}, Acc));
 % push button
 cayenne_decode(<<Ch, 147, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Push_button">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Push_button">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % multistate selector
 cayenne_decode(<<Ch, 148, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Multistate_selector">>, val => Val}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Multistate_selector">>, val => #{value => Val, unit => <<"">>}}, Acc));
 % moisture in g/m³
 cayenne_decode(<<Ch, 170, Val/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Moisture">>, val => Val/2, unit => "g/m"++[179]}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Moisture">>, val => #{value => Val/2, unit => "g/m"++[179]}}, Acc));
 % smoke in µg/m³
 cayenne_decode(<<Ch, 171, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Smoke">>, val => Val/10, unit => [181]++"g/m"++[179]}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Smoke">>, val => #{value => Val/10, unit => [181]++"g/m"++[179]}}, Acc));
 % alcohol in mol/L
 cayenne_decode(<<Ch, 172, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Alcohol">>, val => Val/10, unit => <<"mol/L">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Alcohol">>, val => #{value => Val/10, unit => <<"mol/L">>}}, Acc));
 % LPG (liquid petroleum gas) in m³
 cayenne_decode(<<Ch, 173, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"LPG">>, val => Val/10, unit => "m"++[179]}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"LPG">>, val => #{value => Val/10, unit => "m"++[179]}}, Acc));
 % carbon monoxide in ppm
 cayenne_decode(<<Ch, 174, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Carbon_monoxide">>, val => Val/10, unit => <<"ppm">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Carbon_monoxide">>, val => #{value => Val/10, unit => <<"ppm">>}}, Acc));
 % carbon dioxide in ppm
 cayenne_decode(<<Ch, 175, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Carbon_Dioxide">>, val => Val/10, unit => <<"ppm">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Carbon_Dioxide">>, val => #{value => Val/10, unit => <<"ppm">>}}, Acc));
 % air quality in ppm
 cayenne_decode(<<Ch, 176, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Air_quality">>, val => Val, unit => <<"ppm">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Air_quality">>, val => #{value => Val, unit => <<"ppm">>}}, Acc));
 % collision
 cayenne_decode(<<Ch, 177, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Collision">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Collision">>, val => #{value => Val/10, unit => <<"">>}}, Acc));
 % dust in mg/m³
 cayenne_decode(<<Ch, 178, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Dust">>, val => Val/10, unit => "mg/m"++[179]}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Dust">>, val => #{value => Val/10, unit => "mg/m"++[179]}}, Acc));
 % fire
 cayenne_decode(<<Ch, 179, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Fire">>, val => Val/10}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Fire">>, val => #{value => Val/10, unit => <<"">>}}, Acc));
 % uv in mW/cm²
 cayenne_decode(<<Ch, 180, Val:16/unsigned-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"UV">>, val => Val/10, unit => "mW/cm"++[178]}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"UV">>, val => #{value => Val/10, unit => "mW/cm"++[178]}}, Acc));
 % battery in %
 cayenne_decode(<<Ch, 181, Val, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Battery">>, val => Val/2, unit => <<"%">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Battery">>, val => #{value => Val/2, unit => <<"%">>}}, Acc));
 % velocity in km/h
 cayenne_decode(<<Ch, 182, Val:16/signed-integer, Rest/binary>>, Acc) ->
-    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Velocity">>, val => Val/100, unit => <<"km/h">>}, Acc));
+    cayenne_decode(Rest, maps:put(<<"object_", (integer_to_binary(Ch))/binary>>, #{id => Ch, type => <<"Velocity">>, val => #{value => Val/100, unit => <<"km/h">>}}, Acc));
 cayenne_decode(<<>>, Acc) ->
     Acc.
         
